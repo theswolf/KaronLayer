@@ -23,7 +23,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="USERS")
+//@Table(name="USERS")
 public class User 
 {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -38,16 +38,26 @@ public class User
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private Set<Role> roles = new HashSet<>();
+	private boolean isEnabled;
+	private boolean isCredentialsNonExpired;
+	private boolean isAccountNonLocked;
+	private boolean isAccountNonExpired;
 	
 	public User() {
+		isEnabled=             
+		isCredentialsNonExpired= 
+		isAccountNonLocked=     
+		isAccountNonExpired=true;    
 	}
 
 	public User(String name, String email, String password, Date dob) {
 		//this.id = id;
+		this();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.dob = dob;
+		
 	}
 
 	@Override
@@ -102,6 +112,22 @@ public class User
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public boolean isCredentialsNonExpired() {
+		return isCredentialsNonExpired;
+	}
+
+	public boolean isAccountNonLocked() {
+		return isAccountNonLocked;
+	}
+
+	public boolean isAccountNonExpired() {
+		return isAccountNonExpired;
 	}
 	
 }

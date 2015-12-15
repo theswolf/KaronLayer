@@ -51,21 +51,21 @@ public class SecurityUser extends User implements UserDetails
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return super.isAccountNonExpired();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return super.isAccountNonLocked();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
+		return super.isCredentialsNonExpired();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return super.isEnabled();
 	}	
 }

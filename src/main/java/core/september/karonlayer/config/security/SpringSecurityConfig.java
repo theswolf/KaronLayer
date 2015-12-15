@@ -3,14 +3,17 @@ package core.september.karonlayer.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import core.september.karonlayer.config.Config;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +30,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //this.userService = new UserService();
         //tokenAuthenticationService = new TokenAuthenticationService("tooManySecrets", userService);
     }
+    
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,19 +42,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().cacheControl().and().and()
                 .authorizeRequests()
 
-                // Allow anonymous resource requests
-                .antMatchers("/").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("**/*.html").permitAll()
-                .antMatchers("**/*.css").permitAll()
-                .antMatchers("**/*.js").permitAll()
+                .antMatchers(Config.authUrls).permitAll()
 
-                // Allow anonymous logins
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/signin/**").permitAll()
-                .antMatchers("/signup/**").permitAll()
-
-                // All other request need to be authenticated
                 .anyRequest().authenticated().and()
 
                 // Custom Token based authentication based on the header previously given to the client

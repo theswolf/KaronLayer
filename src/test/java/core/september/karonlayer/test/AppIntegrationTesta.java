@@ -2,8 +2,6 @@ package core.september.karonlayer.test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,19 +32,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 
-import core.september.karonlayer.Application;
+import core.september.authserver.AuthserverApplication;
+import core.september.authserver.model.User;
+import core.september.authserver.service.UserService;
+
+/*import core.september.karonlayer.Application;
 import core.september.karonlayer.config.Config;
 import core.september.karonlayer.config.security.JWTTokenAuthService;
 import core.september.karonlayer.config.security.UserService;
 import core.september.karonlayer.controller.comunication.model.SignInRequest;
 import core.september.karonlayer.controller.comunication.model.SignResponse;
-import core.september.karonlayer.persistence.model.User;
+import core.september.karonlayer.persistence.model.User;*/
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = AuthserverApplication.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-public class AppIntegrationTest {
+public class AppIntegrationTesta {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
 
@@ -66,14 +68,15 @@ public class AppIntegrationTest {
 	public static void beforeClass() {
 		user = new PersistedUser("test", "test", Arrays.asList(new SimpleGrantedAuthority("user")));
 		us.addUser(user);
-	}*/
+	}
 
 	@Before
 	public void setUp() throws Exception {
 		Collection<GrantedAuthority> coll = new ArrayList<GrantedAuthority>();
 		coll.add(new SimpleGrantedAuthority("user"));
-		user = new User("test", "test", coll);
-		us.addUser(user);
+		user = new User("test", "test","test", new Date());
+		//us.addUser(user);
+		us.create(user);
 		this.base = new URL("http://localhost:" + port + "/");
 		template = new TestRestTemplate();
 	}
@@ -81,9 +84,9 @@ public class AppIntegrationTest {
 	@After
 	public void after() {
 		
-		us.getRepo().findAll().forEach(user -> 
+		us.findAll().forEach(user -> 
 		logger.info(user.toString()));
-		us.getRepo().deleteAll();
+		us.deleteAll();
 	}
 	
 	public String parametrizedUrl(String... path) throws Exception {
@@ -92,15 +95,15 @@ public class AppIntegrationTest {
 				pat -> sb.append(pat).append("/")
 				);
 		return this.base.toString().concat(sb.toString());
-	}
+	}*/
 	
-	public String createTokenForUser(User user,Date expire) {
+	/*public String createTokenForUser(User user,Date expire) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .signWith(SignatureAlgorithm.HS512, Config.secret)
                 .setExpiration(expire)
                 .compact();
-    }
+    }*/
 	
 	public Date fromNow(int minutes) {
 		return new Date(System.currentTimeMillis()+minutes*60*1000);
@@ -108,7 +111,8 @@ public class AppIntegrationTest {
 
 	
 	
-	@Test
+	
+	/*@Test
 	public void getSecure() throws Exception {
 		
 		//RestTemplate restTemplate = new RestTemplate();
@@ -164,5 +168,5 @@ public class AppIntegrationTest {
 		ResponseEntity<Object> response = template.exchange(parametrizedUrl("signin"), HttpMethod.POST, entity, Object.class);
 		System.out.println(response.getBody());
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
-	}
+	}*/
 }

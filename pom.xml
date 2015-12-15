@@ -108,28 +108,28 @@
 	</dependencies>
 
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<wro4j.version>1.7.7</wro4j.version>
 	</properties>
 
 
 	<build>
 
-		<resources>
+		<!-- resources>
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
 			</resource>
 			<resource>
 				<directory>${project.build.directory}/generated-resources</directory>
 			</resource>
-		</resources>
+		</resources-->
 		<plugins>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
+			<!-- plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
@@ -142,8 +142,6 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<!-- Serves *only* to filter the wro.xml so it can get an absolute 
-							path for the project -->
 						<id>copy-resources</id>
 						<phase>validate</phase>
 						<goals>
@@ -193,7 +191,7 @@
 						<version>3.2.0</version>
 					</dependency>
 				</dependencies>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 

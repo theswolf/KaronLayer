@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import core.september.karonlayer.persistence.model.User;
+import core.september.karonlayer.persistence.repository.DomainRepo;
 import core.september.karonlayer.persistence.repository.PersistedUserRepo;
 
 
@@ -21,6 +22,8 @@ public class UserService implements UserDetailsService {
     //private final HashMap<String, User> userMap = new HashMap<String, User>();
     @Autowired
     private PersistedUserRepo userRepo;
+    @Autowired
+    private DomainRepo domainRepo;
     
     public UserService() {
     	LoggerFactory.getLogger(this.getClass()).info("UserService was created");
@@ -36,14 +39,21 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public void addUser(User user) {
-    	if(userRepo.findByUsername(user.getUsername()) == null )
+    public User addUser(User user) throws Exception {
+    	if(userRepo.findByUsername(user.getUsername()) == null ) {
     		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-    		userRepo.save(user);
+    		return userRepo.save(user);
+    	}
+    	throw new Exception("User exists");
+    		
     }
     
-    public PersistedUserRepo getRepo() {
+    public PersistedUserRepo getUserRepo() {
     	return userRepo;
+    }
+    
+    public DomainRepo getDomainRepo() {
+    	return domainRepo;
     }
 }
 

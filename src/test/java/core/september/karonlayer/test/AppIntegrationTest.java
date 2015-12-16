@@ -46,7 +46,7 @@ import core.september.karonlayer.persistence.model.User;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-public class AppIntegrationTesta {
+public class AppIntegrationTest {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
 
@@ -77,9 +77,9 @@ public class AppIntegrationTesta {
 	@After
 	public void after() {
 		
-		us.getRepo().findAll().forEach(user -> 
+		us.getUserRepo().findAll().forEach(user -> 
 		logger.info(user.toString()));
-		us.getRepo().deleteAll();
+		us.getUserRepo().deleteAll();
 	}
 	
 	public String parametrizedUrl(String... path) throws Exception {

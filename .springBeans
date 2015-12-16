@@ -7,7 +7,6 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:core.september.karonlayer.Application</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

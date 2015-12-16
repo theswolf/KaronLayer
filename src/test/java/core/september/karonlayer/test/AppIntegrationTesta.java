@@ -2,6 +2,8 @@ package core.september.karonlayer.test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,20 +34,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 
-import core.september.authserver.AuthserverApplication;
-import core.september.authserver.model.User;
-import core.september.authserver.service.UserService;
-
-/*import core.september.karonlayer.Application;
+import core.september.karonlayer.Application;
 import core.september.karonlayer.config.Config;
 import core.september.karonlayer.config.security.JWTTokenAuthService;
 import core.september.karonlayer.config.security.UserService;
 import core.september.karonlayer.controller.comunication.model.SignInRequest;
 import core.september.karonlayer.controller.comunication.model.SignResponse;
-import core.september.karonlayer.persistence.model.User;*/
+import core.september.karonlayer.persistence.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AuthserverApplication.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
 public class AppIntegrationTesta {
@@ -58,25 +56,20 @@ public class AppIntegrationTesta {
 	private URL base;
 	private RestTemplate template;
 	
-	private  User user;
+	private static  User user;
 	
 	@Autowired
 	@Qualifier("UserService")
 	private  UserService us;
 	
-	/*@BeforeClass
-	public static void beforeClass() {
-		user = new PersistedUser("test", "test", Arrays.asList(new SimpleGrantedAuthority("user")));
-		us.addUser(user);
-	}
+
 
 	@Before
 	public void setUp() throws Exception {
 		Collection<GrantedAuthority> coll = new ArrayList<GrantedAuthority>();
 		coll.add(new SimpleGrantedAuthority("user"));
-		user = new User("test", "test","test", new Date());
-		//us.addUser(user);
-		us.create(user);
+		user = new User("test", "test", Arrays.asList(new SimpleGrantedAuthority("user")));
+		us.addUser(user);
 		this.base = new URL("http://localhost:" + port + "/");
 		template = new TestRestTemplate();
 	}
@@ -84,9 +77,9 @@ public class AppIntegrationTesta {
 	@After
 	public void after() {
 		
-		us.findAll().forEach(user -> 
+		us.getRepo().findAll().forEach(user -> 
 		logger.info(user.toString()));
-		us.deleteAll();
+		us.getRepo().deleteAll();
 	}
 	
 	public String parametrizedUrl(String... path) throws Exception {
@@ -95,15 +88,15 @@ public class AppIntegrationTesta {
 				pat -> sb.append(pat).append("/")
 				);
 		return this.base.toString().concat(sb.toString());
-	}*/
+	}
 	
-	/*public String createTokenForUser(User user,Date expire) {
+	public String createTokenForUser(User user,Date expire) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .signWith(SignatureAlgorithm.HS512, Config.secret)
                 .setExpiration(expire)
                 .compact();
-    }*/
+    }
 	
 	public Date fromNow(int minutes) {
 		return new Date(System.currentTimeMillis()+minutes*60*1000);
@@ -112,7 +105,7 @@ public class AppIntegrationTesta {
 	
 	
 	
-	/*@Test
+	@Test
 	public void getSecure() throws Exception {
 		
 		//RestTemplate restTemplate = new RestTemplate();
@@ -168,5 +161,5 @@ public class AppIntegrationTesta {
 		ResponseEntity<Object> response = template.exchange(parametrizedUrl("signin"), HttpMethod.POST, entity, Object.class);
 		System.out.println(response.getBody());
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
-	}*/
+	}
 }

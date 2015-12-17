@@ -1,9 +1,10 @@
 package core.september.karonlayer.persistence.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,14 +23,23 @@ public class Domain {
 	private String alias;
 	private String description;
 	
-	 @ManyToMany
+	 @ManyToMany(fetch=FetchType.EAGER)
 	  @JoinTable
 	  (
 	      name="user_domains",
 	      joinColumns={ @JoinColumn(name="domain_id", referencedColumnName="id") },
 	      inverseJoinColumns={ @JoinColumn(name="user_id", referencedColumnName="id") }
 	  )
-	private List<User> user;
+	private Set<User> user;
+	 
+	 @ManyToMany(fetch=FetchType.EAGER)
+	  @JoinTable
+	  (
+	      name="owner_domains",
+	      joinColumns={ @JoinColumn(name="domain_id", referencedColumnName="id") },
+	      inverseJoinColumns={ @JoinColumn(name="user_id", referencedColumnName="id") }
+	  )
+	private Set<User> owner;
 
 	public Long getId() {
 		return id;
@@ -39,11 +49,11 @@ public class Domain {
 		this.id = id;
 	}
 
-	public List<User> getUser() {
+	public Set<User> getUser() {
 		return user;
 	}
 
-	public void setUser(List<User> user) {
+	public void setUser(Set<User> user) {
 		this.user = user;
 	}
 
@@ -62,6 +72,16 @@ public class Domain {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Set<User> getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Set<User> owner) {
+		this.owner = owner;
+	}
+	
+	
 	
 	
 	 

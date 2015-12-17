@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+
 @ControllerAdvice
 public class GlobalControllerExceptionHandler  {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)  // 500
@@ -16,14 +17,18 @@ public class GlobalControllerExceptionHandler  {
 		//LoggerFactory.getLogger(GlobalControllerExceptionHandler.class).debug("******* Handled");
     	LoggerFactory.getLogger(GlobalControllerExceptionHandler.class).debug("Handled exception of type: "+e.getClass());
 		LoggerFactory.getLogger(GlobalControllerExceptionHandler.class).error(e.getMessage());
-		//e.printStackTrace(response.getWriter());
-		
-	
     }
     
-    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 500
+    @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
     public void handleValidation(Exception e,ServletResponse response) {
     	handleConflict(e,response);
     }
+    
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE) // 406
+    @ExceptionHandler(core.september.karonlayer.config.AppRuntimeException.class)
+    public void handleAppRuntimeException(Exception e,ServletResponse response) {
+    	handleConflict(e,response);
+    }
+    
 }

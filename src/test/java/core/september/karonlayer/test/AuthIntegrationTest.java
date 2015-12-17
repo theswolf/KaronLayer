@@ -2,108 +2,30 @@ package core.september.karonlayer.test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.client.RestTemplate;
 
 import core.september.karonlayer.Application;
-import core.september.karonlayer.config.Config;
 import core.september.karonlayer.config.security.JWTTokenAuthService;
-import core.september.karonlayer.config.security.UserService;
 import core.september.karonlayer.controller.comunication.model.SignInRequest;
 import core.september.karonlayer.controller.comunication.model.SignResponse;
-import core.september.karonlayer.persistence.model.User;
+import core.september.karonlayer.controller.comunication.model.SignUpRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-public class AppIntegrationTest {
-	
-	private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
-
-    @Value("${local.server.port}")
-    private int port;
-
-	private URL base;
-	private RestTemplate template;
-	
-	private static  User user;
-	
-	@Autowired
-	@Qualifier("UserService")
-	private  UserService us;
-	
-
-
-	@Before
-	public void setUp() throws Exception {
-		Collection<GrantedAuthority> coll = new ArrayList<GrantedAuthority>();
-		coll.add(new SimpleGrantedAuthority("user"));
-		user = new User("test", "test", Arrays.asList(new SimpleGrantedAuthority("user")));
-		us.addUser(user);
-		this.base = new URL("http://localhost:" + port + "/");
-		template = new TestRestTemplate();
-	}
-	
-	@After
-	public void after() {
-		
-		us.getUserRepo().findAll().forEach(user -> 
-		logger.info(user.toString()));
-		us.getUserRepo().deleteAll();
-	}
-	
-	public String parametrizedUrl(String... path) throws Exception {
-		StringBuilder sb = new StringBuilder();
-		Arrays.asList(path).forEach(
-				pat -> sb.append(pat).append("/")
-				);
-		return this.base.toString().concat(sb.toString());
-	}
-	
-	public String createTokenForUser(User user,Date expire) {
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .signWith(SignatureAlgorithm.HS512, Config.secret)
-                .setExpiration(expire)
-                .compact();
-    }
-	
-	public Date fromNow(int minutes) {
-		return new Date(System.currentTimeMillis()+minutes*60*1000);
-	}
-
-	
-	
+public class AuthIntegrationTest extends AbstractCommonTestUtils{
 	
 	@Test
 	public void getSecure() throws Exception {
@@ -148,6 +70,7 @@ public class AppIntegrationTest {
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 	}
 	
+	
 	@Test
 	public void signinNull() throws Exception {
 		
@@ -161,5 +84,44 @@ public class AppIntegrationTest {
 		ResponseEntity<Object> response = template.exchange(parametrizedUrl("signin"), HttpMethod.POST, entity, Object.class);
 		System.out.println(response.getBody());
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
+	}
+	
+	@Test
+	public void signUpValidationFault() throws Exception {
+		
+		SignUpRequest req = new SignUpRequest();
+		req.setPassword("testa");
+		req.setConfirmPassword("test");
+		req.setUser("test");
+		
+		HttpEntity<SignUpRequest> entity = new HttpEntity<SignUpRequest>(req);
+		ResponseEntity<Object> response = template.exchange(parametrizedUrl("signup"), HttpMethod.POST, entity, Object.class);
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
+	}
+	
+	@Test
+	public void signUpUserExixts() throws Exception {
+		
+		SignUpRequest req = new SignUpRequest();
+		req.setPassword("test");
+		req.setConfirmPassword("test");
+		req.setUser("test");
+		
+		HttpEntity<SignUpRequest> entity = new HttpEntity<SignUpRequest>(req);
+		ResponseEntity<Object> response = template.exchange(parametrizedUrl("signup"), HttpMethod.POST, entity, Object.class);
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
+	}
+	
+	@Test
+	public void signUpUserOk() throws Exception {
+		
+		SignUpRequest req = new SignUpRequest();
+		req.setPassword("test");
+		req.setConfirmPassword("test");
+		req.setUser("armando");
+		
+		HttpEntity<SignUpRequest> entity = new HttpEntity<SignUpRequest>(req);
+		ResponseEntity<Object> response = template.exchange(parametrizedUrl("signup"), HttpMethod.POST, entity, Object.class);
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 	}
 }

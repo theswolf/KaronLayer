@@ -19,4 +19,7 @@ public interface DomainRepo  extends PagingAndSortingRepository<Domain, Long>{
 	
 	@Query("select d from Domain d inner join d.user user where user.username = ?1")
 	List<Domain> findByUsername(String username);
+	
+	@Query("select d from Domain d inner join d.owner owner where owner.username = ?1")
+	List<Domain> findByOwner(String username);
 }

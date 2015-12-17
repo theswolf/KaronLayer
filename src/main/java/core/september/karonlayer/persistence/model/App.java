@@ -1,6 +1,10 @@
 package core.september.karonlayer.persistence.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,7 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class App {
@@ -24,9 +29,15 @@ public class App {
 	@Enumerated(EnumType.STRING)
 	private AppType type;
 	
-	 @OneToOne(fetch=FetchType.EAGER)
-	  @JoinColumn(name="domain_id")
-	  private Domain domain;
+	@Column
+	@ElementCollection(targetClass=HashMap.class)
+	private Map<String,String> defaultConf;
+	
+	
+	 @ManyToOne(fetch=FetchType.EAGER)
+	 @JoinColumn(name="domain_id")
+	 @NotNull
+	 private Domain domain;
 
 	public Long getId() {
 		return id;
@@ -67,6 +78,16 @@ public class App {
 	public void setDomain(Domain domain) {
 		this.domain = domain;
 	}
+
+	public Map<String, String> getDefaultConf() {
+		return defaultConf;
+	}
+
+	public void setDefaultConf(Map<String, String> defaultConf) {
+		this.defaultConf = defaultConf;
+	}
+	
+	
 	 
 	 
 

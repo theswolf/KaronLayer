@@ -17,35 +17,37 @@ public abstract class DataService<R extends PagingAndSortingRepository<T, ID>,T,
 	@Qualifier("UserService")
 	protected  UserService userService;
 
-	<S extends T> S save(S entity) {
+	public <S extends T> S save(S entity) {
 		return getRepo().save(entity);
 	}
 
 	//<S extends T> Iterable<S> save(Iterable<S> entities);
 
-	T findOne(ID id) {
+	public T findOne(ID id) {
 		return getRepo().findOne(id);
 	}
 
 	//boolean exists(ID id);
 
-	//Iterable<T> findAll();
+	public Iterable<T> findAll() {
+		return getRepo().findAll();
+	}
 
 	//Iterable<T> findAll(Iterable<ID> ids);
 
 	//long count();
 
-	void delete(ID id) {
+	public void delete(ID id) {
 		getRepo().delete(id);
 	}
 
-	void delete(T entity) {
+	public void delete(T entity) {
 		getRepo().delete(entity);
 	}
 
 	//void delete(Iterable<? extends T> entities);
 
-	void deleteAll() {
+	public void deleteAll() {
 		getRepo().deleteAll();
 	}
 }

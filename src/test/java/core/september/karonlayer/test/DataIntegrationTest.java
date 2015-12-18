@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
 
 
 
@@ -119,7 +121,7 @@ public class DataIntegrationTest extends AbstractCommonTestUtils{
 	public void testAppRepo() {
 		App app = new App();
 
-		Map<String,String> defaultConf = Collections.emptyMap();
+		Map<String,String> defaultConf = new HashMap<String, String>();
 		defaultConf.put("test.value.one", "test.description.one");
 		defaultConf.put("test.value.two", "test.description.two");
 
@@ -147,7 +149,7 @@ public class DataIntegrationTest extends AbstractCommonTestUtils{
 	public void testAppRepoNoDomain() {
 		App app = new App();
 
-		Map<String,String> defaultConf = Collections.emptyMap();
+		Map<String,String> defaultConf = new HashMap<String, String>();
 		defaultConf.put("test.value.one", "test.description.one");
 		defaultConf.put("test.value.two", "test.description.two");
 
@@ -167,6 +169,11 @@ public class DataIntegrationTest extends AbstractCommonTestUtils{
 		app2.setDefaultConf(defaultConf);
 		
 		appRepo.save(app2);*/
+	}
+	
+	@Test
+	public void testScaramancy() {
+		assertThat(2, equalTo(2));
 	}
 
 

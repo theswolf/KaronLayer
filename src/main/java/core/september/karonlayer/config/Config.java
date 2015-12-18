@@ -24,8 +24,8 @@ public class Config {
 		"**/*.js",         
 		"/auth/**",    
 		"/signin/**",
-		"/signup/**",
-		staticPrefix+"**"
+		"/signup/**"
+		//staticPrefix+"**"
 		
 	};
 	public static int orientDbPoolCapacity = 10;

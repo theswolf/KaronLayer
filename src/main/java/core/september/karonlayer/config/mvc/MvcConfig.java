@@ -10,21 +10,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import core.september.karonlayer.config.Config;
 import core.september.karonlayer.config.Config.Router;
 
-@Configuration
-@EnableWebMvc
+//@Configuration
+//@EnableWebMvc
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-	private Logger logger = LoggerFactory.getLogger(MvcConfig.class);
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-    	for(Router route: Router.values()) {
-    		registry.addViewController(Config.staticPrefix.concat(route.name())).setViewName(route.getView());
-    		logger.debug("Registered".concat(Config.staticPrefix.concat(route.name())).concat(" on ").concat(route.getView()));
-    	}
-        
-        //registry.addViewController("/").setViewName("home");
-        //registry.addViewController("/hello").setViewName("hello");
-        //registry.addViewController("/login").setViewName("login");
-    }
+//	private Logger logger = LoggerFactory.getLogger(MvcConfig.class);
+//    @Override
+//    public void addViewControllers(ViewControllerRegistry registry) {
+//    	for(Router route: Router.values()) {
+//    		registry.addViewController(Config.staticPrefix.concat(route.name())).setViewName(route.getView());
+//    		logger.debug("Registered".concat(Config.staticPrefix.concat(route.name())).concat(" on ").concat(route.getView()));
+//    	}
+//        
+//        //registry.addViewController("/").setViewName("home");
+//        //registry.addViewController("/hello").setViewName("hello");
+//        //registry.addViewController("/login").setViewName("login");
+//    }
 }
 

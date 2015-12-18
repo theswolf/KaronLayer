@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.google.common.collect.Maps;
+
 
 import core.september.karonlayer.Application;
 import core.september.karonlayer.persistence.model.App;
@@ -118,7 +119,7 @@ public class DataIntegrationTest extends AbstractCommonTestUtils{
 	public void testAppRepo() {
 		App app = new App();
 
-		Map<String,String> defaultConf = Maps.newHashMap();
+		Map<String,String> defaultConf = Collections.emptyMap();
 		defaultConf.put("test.value.one", "test.description.one");
 		defaultConf.put("test.value.two", "test.description.two");
 
@@ -146,7 +147,7 @@ public class DataIntegrationTest extends AbstractCommonTestUtils{
 	public void testAppRepoNoDomain() {
 		App app = new App();
 
-		Map<String,String> defaultConf = Maps.newHashMap();
+		Map<String,String> defaultConf = Collections.emptyMap();
 		defaultConf.put("test.value.one", "test.description.one");
 		defaultConf.put("test.value.two", "test.description.two");
 

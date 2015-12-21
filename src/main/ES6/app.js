@@ -2,11 +2,9 @@
 $(function() {
 	var Page = React.createClass({
 		  render: function render() {
-			  <div>
-			  	AppNavbar
-			  </div>
+			  return <div><AppNavigation /></div>
 		  }
-			});
+		});
 
 	ReactDOM.render(<Page />, document.getElementById('container'));
 });

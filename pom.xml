@@ -118,6 +118,31 @@
 		<orient.db.version>2.1.7</orient.db.version>
 		<gson.version>2.5</gson.version>
 	</properties>
+	
+	<profiles>
+		 <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+<!--                 <property> -->
+<!--                     <name>environment.type</name> -->
+<!--                     <value>dev</value> -->
+<!--                 </property> -->
+            </activation>
+            <properties>
+                <wro.wrofile>${project.build.directory}/wro/wro.dev.xml</wro.wrofile>
+                <wro.extraconfigfile>${basedir}/src/main/wro/wro.dev.properties</wro.extraconfigfile>
+            </properties>
+        </profile>
+         <profile>
+            <id>prod</id>
+            <properties>
+                <wro.wrofile>${project.build.directory}/wro/wro.prod.xml</wro.wrofile>
+                <wro.extraconfigfile>${basedir}/src/main/wro/wro.prod.properties</wro.extraconfigfile>
+            </properties>
+        </profile>
+	</profiles>
+	
 
 
 	<build>
@@ -198,8 +223,8 @@
 					<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
 					<cssDestinationFolder>${project.build.directory}/generated-resources/static/css</cssDestinationFolder>
 					<jsDestinationFolder>${project.build.directory}/generated-resources/static/js</jsDestinationFolder>
-					<wroFile>${project.build.directory}/wro/wro.xml</wroFile>
-					<extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
+					<wroFile>${wro.wrofile}</wroFile>
+					<extraConfigFile>${wro.extraconfigfile}</extraConfigFile>
 					<contextFolder>${basedir}/src/main/wro</contextFolder>
 				</configuration>
 				<dependencies>

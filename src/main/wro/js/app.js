@@ -5,7 +5,7 @@ $(function () {
 			return React.createElement(
 				'div',
 				null,
-				'AppNavigation'
+				React.createElement(AppNavigation, null)
 			);
 		}
 	});

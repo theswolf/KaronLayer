@@ -1,0 +1,13 @@
+<groups xmlns="http://www.isdc.ro/wro">
+	<group name="foundation">
+		<css>webjar:bootstrap/3.3.5/less/bootstrap.less</css>
+		<css>file:@project.basedir@/src/main/wro/main.less</css>
+		<js>webjar:jquery/2.1.4/jquery.min.js</js>
+		<js>webjar:react/0.14.3/react.min.js</js>
+		<js>webjar:react/0.14.3/react-dom.min.js</js>
+		<js>webjar:react-bootstrap/0.28.1/react-bootstrap.min.js</js>
+	</group>
+	<group name="app">
+		<js>file:@project.basedir@/src/main/wro/js/**.js</js>
+	</group>
+</groups>

@@ -4,3 +4,4 @@
 target
 *.log
 .springBeans  
+node_modules  

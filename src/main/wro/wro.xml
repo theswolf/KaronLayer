@@ -10,6 +10,7 @@
 	<group name="foundation">
 		<css>webjar:bootstrap/3.3.5/less/bootstrap.less</css>
 		<css>file:@project.basedir@/src/main/wro/main.less</css>
+<!-- 		<js>webjar:requirejs/2.1.22/requirejs.js</js> -->
 		<js>webjar:jquery/2.1.4/jquery.js</js>
 		<js>webjar:react/0.14.3/react.js</js>
 		<js>webjar:react/0.14.3/react-dom.js</js>

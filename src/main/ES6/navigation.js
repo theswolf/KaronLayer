@@ -4,6 +4,7 @@ var NavItem = ReactBootstrap.NavItem;
 var MenuItem = ReactBootstrap.MenuItem;
 var Nav = ReactBootstrap.Nav;
 
+
 var NavbarInstance = (
 		  <Navbar inverse>
 		    <Navbar.Header>
